@@ -148,12 +148,6 @@
 
         <div class="plan-card" v-else v-for="plan in filteredPlans" :key="plan.id">
 
-          <div class="card-header">
-
-            <h2 class="card-title">{{ plan.name }}</h2>
-
-          </div>
-
           <div class="card-body">
 
             
@@ -195,6 +189,7 @@
             </div>
 
             <div class="plan-actions">
+              <h2 class="plan-action-title">{{ plan.name }}</h2>
               <div class="plan-action-price">
                 <span>{{ currencySymbol }}{{ getPlanMainPrice(plan) }}</span>
                 <span class="period">{{ $t(`shop.plan.periods.${getPriceTypeKey(getDisplayPriceType(plan))}`) }}</span>
@@ -1334,6 +1329,14 @@ export default {
         justify-content: space-between;
         gap: 16px;
         margin-top: 20px;
+      }
+
+      .plan-action-title {
+        flex: 1;
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-color);
       }
 
       .plan-action-price {

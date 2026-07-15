@@ -152,22 +152,6 @@
 
             <h2 class="card-title">{{ plan.name }}</h2>
 
-            <div class="plan-header-price">
-              <span class="currency">{{ currencySymbol }}</span>
-              <span class="amount">{{ getPlanMainPrice(plan) }}</span>
-              <span class="period">{{ $t(`shop.plan.periods.${getPriceTypeKey(getDisplayPriceType(plan))}`) }}</span>
-            </div>
-
-            <button
-              class="btn-purchase glassmorphism header-purchase"
-              :class="{ 'btn-disabled': plan.capacity_limit === 0 }"
-              @click="purchasePlan(plan)"
-              :disabled="plan.capacity_limit === 0"
-            >
-              <IconShoppingCart class="btn-icon" />
-              <span class="btn-text">{{ plan.capacity_limit === 0 ? $t('shop.plan.sold_out_btn') : $t('shop.plan.purchase') }}</span>
-            </button>
-
           </div>
 
           <div class="card-body">
@@ -208,6 +192,22 @@
 
               <div v-else class="html-content" v-html="plan.content"></div>
 
+            </div>
+
+            <div class="plan-actions">
+              <div class="plan-action-price">
+                <span>{{ currencySymbol }}{{ getPlanMainPrice(plan) }}</span>
+                <span class="period">{{ $t(`shop.plan.periods.${getPriceTypeKey(getDisplayPriceType(plan))}`) }}</span>
+              </div>
+              <button
+                class="btn-purchase glassmorphism"
+                :class="{ 'btn-disabled': plan.capacity_limit === 0 }"
+                @click="purchasePlan(plan)"
+                :disabled="plan.capacity_limit === 0"
+              >
+                <IconShoppingCart class="btn-icon" />
+                <span class="btn-text">{{ plan.capacity_limit === 0 ? $t('shop.plan.sold_out_btn') : $t('shop.plan.purchase') }}</span>
+              </button>
             </div>
 
             
@@ -1326,6 +1326,30 @@ export default {
         height: 36px;
         margin-top: 0;
         padding: 0 14px;
+      }
+
+      .plan-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .plan-action-price {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-color);
+
+        .period {
+          margin-left: 4px;
+          color: var(--secondary-text-color);
+        }
+      }
+
+      .plan-actions .btn-purchase {
+        margin-top: 0;
+        flex-shrink: 0;
       }
 
     }

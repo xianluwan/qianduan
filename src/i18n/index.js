@@ -34,7 +34,7 @@ const injectSiteName = (messages) => {
 
 const getBrowserLanguage = () => {
 
-  const browserLang = navigator.language || navigator.userLanguage;
+  return 'zh-CN';
 
   if (browserLang === 'zh-CN') return 'zh-CN';
 
@@ -76,7 +76,7 @@ const getStoredLanguage = () => {
 
   const storedLanguage = localStorage.getItem('language');
 
-  if (storedLanguage) {
+  if (storedLanguage === 'zh-CN') {
 
     return storedLanguage;
 
@@ -100,7 +100,7 @@ const getStoredLanguage = () => {
 
 
 
-const supportedLocales = ['zh-CN', 'vi-VN', 'en-US', 'zh-TW', 'ja-JP', 'ko-KR', 'ru-RU', 'fa-IR'];
+const supportedLocales = ['zh-CN'];
 
 
 
@@ -257,7 +257,7 @@ const i18n = createI18n({
   legacy: false,
   locale: getStoredLanguage(),
 
-  fallbackLocale: 'en-US',
+  fallbackLocale: 'zh-CN',
 
   messages: {},
   silentTranslationWarn: true,
@@ -272,7 +272,7 @@ export const setLanguage = async (lang) => {
 
   if (!supportedLocales.includes(lang)) {
 
-    lang = 'en-US';
+    lang = 'zh-CN';
   }
 
   

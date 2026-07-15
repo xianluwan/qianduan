@@ -2852,4 +2852,42 @@ export default {
   color: var(--secondary-text-color);
 }
 
-</style> 
+.plan-card .plan-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.plan-card .plan-action-title,
+.plan-card .plan-action-price {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.plan-card .plan-action-price .period {
+  margin-left: 4px;
+  color: var(--secondary-text-color);
+}
+
+.plan-card .plan-actions .btn-purchase {
+  min-width: 120px;
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .plan-card .plan-actions {
+    grid-template-columns: 1fr auto;
+  }
+
+  .plan-card .plan-action-title {
+    grid-column: 1 / -1;
+  }
+}
+</style>

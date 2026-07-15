@@ -4,24 +4,6 @@
 
     <div class="profile-inner">
 
-      <!-- 欢迎卡片 -->
-
-      <div class="dashboard-card welcome-card">
-
-        <div class="card-header">
-
-          <h2 class="card-title">{{ $t('profile.title') }}</h2>
-
-        </div>
-
-        <div class="card-body">
-
-          <p>{{ $t('common.welcome') }}</p>
-
-        </div>
-
-      </div>
-
 
 
       <!-- 骨架屏加载状态 -->
@@ -305,46 +287,6 @@
         </div>
 
 
-
-        <!-- 账号设置 -->
-
-        <div class="profile-card">
-
-          <div class="card-header">
-
-            <h3>{{ $t('profile.accountSettings') }}</h3>
-
-          </div>
-
-          <div class="settings-content">
-
-            <div class="setting-item">
-
-              <div class="setting-info">
-
-                <span class="setting-label">{{ $t('profile.autoRenewal') }}</span>
-
-                <span class="setting-description">{{ $t('profile.autoRenewalDesc') }}</span>
-
-              </div>
-
-              <div class="setting-toggle">
-
-                <label class="switch" :class="{ 'disabled': updatingSettings }">
-
-                  <input type="checkbox" v-model="remindAutoRenewal" @change="updateRemindSettings('auto_renewal')" :disabled="updatingSettings" />
-
-                  <span class="slider round" :class="{ 'loading': updatingAutoRenewal }"></span>
-
-                </label>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
 
 
 
@@ -766,6 +708,26 @@
 
 
 
+  <!-- 礼品卡兑换结果弹窗 -->
+  <transition name="modal-fade">
+    <div v-if="showGiftCardResult" class="modal-overlay" @click="showGiftCardResult = false">
+      <div class="modal-content" @click.stop>
+        <div class="modal-header">
+          <h3>礼品卡兑换成功</h3>
+          <button class="modal-close" @click="showGiftCardResult = false">
+            <IconX :size="20" />
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{ giftCardRedeemResult }}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-submit" @click="showGiftCardResult = false">我知道了</button>
+        </div>
+      </div>
+    </div>
+  </transition>
+
   <!-- Telegram机器人绑定弹窗 -->
 
   <transition name="modal-fade">
@@ -998,6 +960,10 @@ const sessionError = ref('');
 const giftCardCode = ref('');
 
 const isRedeeming = ref(false);
+
+const showGiftCardResult = ref(false);
+
+const giftCardRedeemResult = ref('');
 
 
 
@@ -1559,8 +1525,15 @@ const redeemGiftCard = async () => {
 
 
 
-    if (response && response.data) {
+    if (response && (response.data !== undefined || response.message)) {
 
+      const data = response.data;
+      giftCardRedeemResult.value = response.message
+        || (typeof data === 'string' ? data : '')
+        || data?.plan_name
+        || data?.name
+        || '兑换成功，账户权益已更新。';
+      showGiftCardResult.value = true;
       success(t('profile.giftCardSuccess'));
 
       giftCardCode.value = '';
@@ -3802,4 +3775,3 @@ body.dark-theme {
 }
 
 </style>
-

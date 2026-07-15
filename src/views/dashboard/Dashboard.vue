@@ -1,19 +1,6 @@
 ﻿<template>
   <div class="dashboard-container">
     <div class="dashboard-inner">
-      <AppCard class="dashboard-card welcome-card" :class="{'card-animate': !loading.userInfo}" hoverable no-padding>
-        <div class="card-header">
-          <h2 class="card-title">{{ $t('dashboard.welcome') }}</h2>
-        </div>
-        <div class="card-body">
-          <p class="">{{ $t('dashboard.welcomeDesc') }}</p>
-          <p v-if="userStats.userEmail && DASHBOARD_CONFIG.showUserEmail" class="user-email">
-            <IconMail :size="16"/>
-            <span>{{ userStats.userEmail }}</span>
-          </p>
-        </div>
-      </AppCard>
-
       <!-- 通知区域 -->
       <!-- 待处理事项提示 -->
       <AppCard v-if="hasPendingItems" class="dashboard-card pending-items-card"
@@ -512,43 +499,6 @@
                    :class="{'animate-water': waterAnimationState.canAnimate}"
                    :style="{ height: waterAnimationState.canAnimate ? `${trafficPercentage}%` : '0%' }">
               </div>
-            </div>
-          </AppCard>
-
-          <AppCard class="stats-card"
-               :class="{
-              'card-animate': !loading.userStats,
-              'warning-card': isExpiringSoon && !isExpired,
-              'danger-card': isExpired
-            }"
-               style="animation-delay: 0.6s" variant="stats" hoverable no-padding>
-            <div class="stats-icon">
-              <IconCalendar :size="32"/>
-            </div>
-            <div class="stats-info">
-              <div class="stats-value">
-                {{
-                  userStats.isRemainingDaysPermanent ? $t('dashboard.permanent') : userStats.remainingDays + $t('dashboard.days')
-                }}
-              </div>
-              <div class="stats-label">{{ $t('dashboard.remainingDays') }}</div>
-            </div>
-          </AppCard>
-
-          <AppCard class="stats-card"
-               :class="{'card-animate': !loading.userStats, 'balance-card': true, 'clickable': isXiaoPanel}"
-               style="animation-delay: 0.7s"
-               @click="isXiaoPanel ? navigateToDeposit() : null"
-               :style="isXiaoPanel ? { cursor: 'pointer' } : {}" variant="stats" :hoverable="isXiaoPanel" no-padding>
-            <div class="stats-icon">
-              <IconWallet :size="32"/>
-            </div>
-            <div class="stats-info">
-              <div class="stats-value">{{ userStats.accountBalance }}</div>
-              <div class="stats-label">{{ $t('dashboard.accountBalance') }}</div>
-            </div>
-            <div v-if="isXiaoPanel" class="chevron-icon">
-              <IconChevronRight :size="20"/>
             </div>
           </AppCard>
 
@@ -4005,4 +3955,3 @@ a.eztheme-btn {
   color: var(--theme-color);
 }
 </style>
-

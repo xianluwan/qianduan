@@ -152,29 +152,21 @@
 
             <h2 class="card-title">{{ plan.name }}</h2>
 
-            <div class="card-badge glassmorphism stock-plenty" v-if="plan.capacity_limit >= SHOP_CONFIG.lowStockThreshold || plan.capacity_limit === null">
-
-              <IconBox :size="16" class="badge-icon" />
-
-              <span>{{ $t('shop.plan.stock.plenty') }}</span>
-
+            <div class="plan-header-price">
+              <span class="currency">{{ currencySymbol }}</span>
+              <span class="amount">{{ getPlanMainPrice(plan) }}</span>
+              <span class="period">{{ $t(`shop.plan.periods.${getPriceTypeKey(getDisplayPriceType(plan))}`) }}</span>
             </div>
 
-            <div class="card-badge glassmorphism stock-warning" v-else-if="plan.capacity_limit > 0 && plan.capacity_limit < SHOP_CONFIG.lowStockThreshold">
-
-              <IconBox :size="16" class="badge-icon" />
-
-              <span>{{ $t('shop.plan.stock.warning') }}</span>
-
-            </div>
-
-            <div class="card-badge glassmorphism stock-danger" v-if="plan.capacity_limit === 0">
-
-              <IconBox :size="16" class="badge-icon" />
-
-              <span>{{ $t('shop.plan.stock.sold_out') }}</span>
-
-            </div>
+            <button
+              class="btn-purchase glassmorphism header-purchase"
+              :class="{ 'btn-disabled': plan.capacity_limit === 0 }"
+              @click="purchasePlan(plan)"
+              :disabled="plan.capacity_limit === 0"
+            >
+              <IconShoppingCart class="btn-icon" />
+              <span class="btn-text">{{ plan.capacity_limit === 0 ? $t('shop.plan.sold_out_btn') : $t('shop.plan.purchase') }}</span>
+            </button>
 
           </div>
 
@@ -219,26 +211,6 @@
             </div>
 
             
-
-            <!-- 购买按钮 -->
-
-            <button 
-
-              class="btn-purchase glassmorphism" 
-
-              :class="{ 'btn-disabled': plan.capacity_limit === 0 }"
-
-              @click="purchasePlan(plan)"
-
-              :disabled="plan.capacity_limit === 0"
-
-            >
-
-              <IconShoppingCart class="btn-icon" />
-
-              <span class="btn-text">{{ plan.capacity_limit === 0 ? $t('shop.plan.sold_out_btn') : $t('shop.plan.purchase') }}</span>
-
-            </button>
 
           </div>
 
@@ -1322,6 +1294,38 @@ export default {
 
         }
 
+      }
+
+      .plan-header-price {
+        display: flex;
+        align-items: baseline;
+        gap: 2px;
+        margin-left: auto;
+        margin-right: 12px;
+        white-space: nowrap;
+
+        .currency {
+          font-size: 16px;
+          font-weight: 500;
+        }
+
+        .amount {
+          font-size: 28px;
+          font-weight: 700;
+        }
+
+        .period {
+          font-size: 13px;
+          color: var(--secondary-text-color);
+        }
+      }
+
+      .header-purchase {
+        flex-shrink: 0;
+        min-width: auto;
+        height: 36px;
+        margin-top: 0;
+        padding: 0 14px;
       }
 
     }

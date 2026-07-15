@@ -713,7 +713,7 @@
     <div v-if="showGiftCardResult" class="modal-overlay" @click="showGiftCardResult = false">
       <div class="modal-content" @click.stop>
         <div class="modal-header">
-          <h3>礼品卡兑换成功</h3>
+          <h3>{{ giftCardResultTitle }}</h3>
           <button class="modal-close" @click="showGiftCardResult = false">
             <IconX :size="20" />
           </button>
@@ -964,6 +964,8 @@ const isRedeeming = ref(false);
 const showGiftCardResult = ref(false);
 
 const giftCardRedeemResult = ref('');
+
+const giftCardResultTitle = ref('');
 
 
 
@@ -1525,9 +1527,10 @@ const redeemGiftCard = async () => {
 
 
 
-    if (response && (response.data !== undefined || response.message)) {
+    if (response?.status === 'success' || response?.data === true) {
 
       const data = response.data;
+      giftCardResultTitle.value = '礼品卡兑换成功';
       giftCardRedeemResult.value = response.message
         || (typeof data === 'string' ? data : '')
         || data?.plan_name
@@ -1541,13 +1544,23 @@ const redeemGiftCard = async () => {
 
       await fetchUserInfo(false);
 
+    } else {
+      throw new Error(response?.message || '礼品卡兑换失败');
+
     }
 
   } catch (err) {
 
     console.error('Failed to redeem gift card:', err);
 
-    showError(t('profile.giftCardError'));
+    const message = err.response?.data?.message
+      || err.response?.message
+      || err.message
+      || t('profile.giftCardError');
+    giftCardResultTitle.value = '礼品卡兑换失败';
+    giftCardRedeemResult.value = message;
+    showGiftCardResult.value = true;
+    showError(message);
 
   } finally {
 

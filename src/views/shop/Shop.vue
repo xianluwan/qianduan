@@ -4,25 +4,6 @@
 
     <div class="shop-inner">
 
-      <!-- 欢迎卡片 -->
-
-      <div class="dashboard-card welcome-card">
-
-        <div class="card-header">
-
-          <h2 class="card-title">{{ $t('shop.title') }}</h2>
-
-        </div>
-
-        <div class="card-body">
-
-          <p>{{ $t('shop.description') }}</p>
-
-        </div>
-
-      </div>
-
-      
 
       <!-- 套餐统计卡片组 -->
 
@@ -110,43 +91,6 @@
 
       
 
-      <!-- 筛选选项卡 - 设计成圆形切换按钮 -->
-
-      <div class="filter-toggle-container">
-
-        <div class="filter-toggle-wrapper">
-
-          <div
-
-            v-for="filter in filters"
-
-            :key="`${filter.value}-${currentLanguage}`"
-
-            class="filter-option"
-
-            :class="{ 'active': selectedFilter === filter.value }"
-
-            @click="setFilter(filter.value)"
-
-          >
-
-            <div class="option-icon">
-
-              <IconCircleCheck v-if="selectedFilter === filter.value" />
-
-              <IconCircle v-else />
-
-            </div>
-
-            <span class="option-text">{{ $t(`shop.filter.${filter.value}`) }}</span>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      
 
       <!-- 套餐列表 -->
 
@@ -235,84 +179,6 @@
           </div>
 
           <div class="card-body">
-
-            <!-- 价格区域 - 修改为显示支持的所有周期 -->
-
-            <div class="plan-price">
-
-              <div class="price-display">
-
-                <span class="currency">{{ currencySymbol }}</span>
-
-                <span class="amount">{{ getPlanMainPrice(plan) }}</span>
-
-                <span class="period">{{ $t(`shop.plan.periods.${getPriceTypeKey(getDisplayPriceType(plan))}`) }}</span>
-
-              </div>
-
-              
-
-              <!-- 支持的周期标签 - 改进显示效果 -->
-
-              <div class="supported-periods" v-if="!SHOP_CONFIG.hidePeriodTabs">
-
-                <div class="period-labels">
-
-                  <span 
-
-                    v-for="(price, type) in getPlanPrices(plan)" 
-
-                    :key="type"
-
-                    class="period-tag"
-
-                    :class="{ 
-
-                      'active': getDisplayPriceType(plan) === type,
-
-                      'disabled': price === null
-
-                    }"
-
-                    @click="price !== null && selectPlanPriceType(plan.id, type)"
-
-                  >
-
-                    <IconCheck v-if="price !== null" class="tag-icon check" />
-
-                    <IconX v-else class="tag-icon error" />
-
-                    {{ $t(`shop.plan.price_options.${getPriceTypeKey(type)}`) }}
-
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            
-
-            <!-- 周期折扣计算 -->
-
-            <div class="discount-calculation" v-if="SHOP_CONFIG.enableDiscountCalculation && calculateDiscount(plan).showDiscount">
-
-              <div class="discount-info">
-
-                <span class="period-name">{{ calculateDiscount(plan).periodName }}</span>
-
-                <span class="discount-label">&nbsp;{{ $t('shop.plan.discount.relative') }} </span>
-
-                <span class="discount-value">&nbsp;{{ calculateDiscount(plan).discountPercentage }}%</span>
-
-                <span class="saving-text">，{{ $t('shop.plan.discount.savings') }} </span>
-
-                <span class="saving-amount">&nbsp;{{ currencySymbol }}{{ calculateDiscount(plan).savingsAmount }}</span>
-
-              </div>
-
-            </div>
 
             
 
@@ -2956,4 +2822,3 @@ export default {
 }
 
 </style> 
-
